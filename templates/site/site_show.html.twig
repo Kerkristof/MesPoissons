@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+  <section>
+    <h3>{{ site.nom}} <small>dans la catégorie {{site.category.nom}}</small></h3>
+    <img src={{ site.image }} alt="fish" class="image">
+    <hr>
+    <strong>Description</strong>
+    <p>{{ site.content}} </p>
+    <hr>
+    <strong>Les spots</strong>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>GPS</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for spot in site.spots %}
+        <tr>
+          <td>{{ spot.nom }}</td>
+          <td> <a href="https://www.google.fr/maps/place/{{spot.gps}}" target="_blank">{{ spot.gps }}</a></td>
+          <td><a href="{{ path('spot_edit', {'site_id' : site.id, 'spot_id' : spot.id }) }}">Modifier</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{{ path('spot_create',{'site_id' : site.id}) }}">Ajouter un nouveau spot</a>
+  </section>
+
+{% endblock %}

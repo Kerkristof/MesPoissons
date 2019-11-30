@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+  {% if editMode %}
+    <h2>Page de modification</h2>
+  {% else %}
+    <h2>Page d'ajout</h2>
+  {% endif %}
+
+  {{ form_start(formSortie) }}
+    {{ form_row(formSortie.content, { 'label' : "Description", 'attr' : {'placeholder' : "Entrez une description"}}) }}
+
+    <button type="submit" class="btn btn-success">
+      {% if editMode %}
+        Enregistrer les modifications
+      {% else %}
+        Ajouter la sortie
+      {% endif %}
+    </button>
+
+  {{ form_end(formSortie) }}
+
+{% endblock %}

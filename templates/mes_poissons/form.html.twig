@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formEspece 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+  {{ form_start(formEspece) }}
+
+    {{ form_row(formEspece.nom, { 'label' : "Nom de l'espèce", 'attr' : {'placeholder' : "Entrez le nom de l'espèce"}}) }}
+    {{ form_row(formEspece.taille_min, {'label':"Taille minimale de prélèvement en cm", 'attr' : {'placeholder' : "Entrez la taille minimale de prélèvement"}}) }}
+    {{ form_row(formEspece.contenu, {'label':"Description de l'espèce",'attr' : {'placeholder' : "Entrez la description de l'espèce"}} ) }}
+    {{ form_row(formEspece.image, {'label':"Adresse URL de l'image",'attr' : {'placeholder' : "Entrez l'adresse URL de l'image"}} ) }}
+    {{ form_row(formEspece.category, {'label': "Catégorie"} ) }}
+    <button type="submit" class="btn btn-success">
+  {% if editMode %}
+    Enregistrer les modifications
+  {% else %}
+    Ajouter l'espèce
+  {% endif %}
+    </button>
+    <a href="{{ path("category_create")}}" class="btn btn-primary">Ajouter une catégorie</a>
+
+  {{ form_end(formEspece)}}
+
+{% endblock %}

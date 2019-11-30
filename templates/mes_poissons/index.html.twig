@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MesPoissonsController!{% endblock %}
+
+{% block body %}
+<div class="row">
+  {% for espece in especes | slice(offset, nbVue) %}
+    <div class="col-md-2">
+      <div class="card">
+        <div class="card-header" style="height:60px;">
+          <center><img class="card-image image" src="{{ espece.image }}" alt=""></center>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ espece.nom }}</h5>
+          <small>Cat. {{ espece.category.nom }}</small>
+          <p class="card-text">Par {{ espece.author }}</p>
+          <div class="row">
+            <div class="col-md-6">
+              <strong class="">{{ espece.loves | length }}</strong>
+              <img src="/assets/icones/coeur.webp" class="" style="width: 40%;" alt="heart">
+            </div>
+            <div class="col-md-6">
+              <strong>{{ espece.comments | length }}</strong>
+              <img src="/assets/icones/comment.png" style="width: 50%;" alt="comment">
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="{{ path('show',{'id' : espece.id}) }}" class="btn btn-primary">Lire l'article</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<!-- PASSER A LA PAGE SUIVANTE -->
+<a href="/index/{{ offset - nbVue }}" class="btn btn-primary prec"><<</a>
+<span>Page {{ offset / nbVue + 1 }} </span>
+<a href="/index/{{ offset + nbVue }}" class="btn btn-primary suiv">>></a>
+<hr>
+
+
+<!-- AJOUTER UN NOUVELLE ESPECE -->
+{% if app.user %}
+  <a href="{{ path('create') }}" class="btn btn-success">Ajouter une nouvelle espèce</a>
+{% else %}
+  <a href="{{ path('security_login')}}"><strong>Connectez vous pour publier un nouvel article</strong>
+{% endif %}
+{% endblock %}

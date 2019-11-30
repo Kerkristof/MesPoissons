@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+  {% if editMode %}
+    <h2>Page de modification d'un spot</h2>
+  {% else %}
+    <h2>Page d'ajout d'un spot</h2>
+  {% endif %}
+
+  {{ form_start(formspot) }}
+    {{ form_row(formspot.nom, { 'label' : "Nom du spot", 'attr' : {'placeholder' : "Entrez le nom du spot"}}) }}
+    {{ form_row(formspot.gps, { 'label' : "Coordonnées GSP", 'attr' : {'placeholder' : "ex 48.52459, 1.98552"}}) }}
+
+    <button type="submit" class="btn btn-success">
+      {% if editMode %}
+        Enregistrer les modifications
+      {% else %}
+        Ajouter le spot
+      {% endif %}
+    </button>
+
+  {{ form_end(formspot) }}
+
+{% endblock %}

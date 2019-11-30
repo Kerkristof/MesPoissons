@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello MesPoissonsController!{% endblock %}
+{% block body %}
+  {% if not app.user %}
+    <h2>{{ message }}</h2>
+  {% else %}
+    <h2>{{ message}} mon cher {{ app.user.username}}</h2>
+  {% endif %}
+
+  <p id="comment"></p>
+  <img id="main_fish" src="/assets/images/animation/fishSleepLeft.png" width="30%" alt="poisson">
+  <br>
+  <img id="worm" src="/assets/images/animation/wormRight.png"  width = "10%">
+{% endblock %}
+
+{% block javascripts %}
+  <script type="text/javascript" src="js\monJs.js">
+{% endblock %}

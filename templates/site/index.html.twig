@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SiteController!{% endblock %}
+
+{% block body %}
+  <div class="row">
+    {% for site in sites %}
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <a href="{{path('site_show', {'id' : site.id })}}">
+              <h4 class="card-title">{{ site.nom }}</h4>
+            </a>
+            <p>Créé par {{ site.user.username }}</p>
+            <small class="card-text">Cat. {{ site.category.nom }}</small>
+              <p class="card-text">GPS
+                <a href="https://www.google.fr/maps/place/{{site.gps}}" target="_blank">{{ site.gps }}</a>
+              </p>
+              <a href="{{ path('sortie', {'site_id' : site.id}) }}"> {{ site.sorties | length }} sortie(s) à {{ site.nom}}</a>
+              <br>
+              {% if app.user %}
+                <a href="{{path('sortie_create', {'site_id' : site.id }) }}">Ajouter une sortie</a>
+                <br>
+              {% endif %}
+          </div>
+          <div class="card-footer">
+            {% if app.user and (app.user.username == site.user.username or is_granted('ROLE_ADMIN')) %}
+              <a href="{{ path('site_edit',{'id' : site.id}) }}" class="btn btn-warning">Modifier</a>
+              <a href="{{ path('site_delete',{'id' : site.id}) }}" class="btn btn-danger">Supprimer</a>
+            {% else %}
+            <a href="#"class="disabled btn btn-warning">Modifier</a>
+            <a href="" class="disabled btn btn-danger">Supprimer</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- AJOUTER UN NOUVEAU SIETs -->
+  <hr>
+  {% if app.user %}
+    <a href="{{ path('site_create')}}" class="btn btn-success">Ajouter un nouveau site</a>
+  {% else %}
+    <a href="{{ path('security_login')}}"><strong>Connectez vous pour publier un nouveau site</strong>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig'%}
+
+{% block body%}
+
+<section>
+  <h3>{{ espece.nom}} <small>dans la catégorie {{espece.category.nom}}</small></h3>
+  <p>Article créé le {{ espece.createdAt | date('d/m/Y') }} par <strong>{{ espece.author}}</strong></p>
+  <p>La taille minimale de prélèvement pour ce poisson est de {{ espece.tailleMin}} cm </p>
+  <img src={{ espece.image }} alt="fish" class="image">
+  <p>{{ espece.contenu}}</p>
+  {% if app.user and (app.user.username == espece.author or is_granted('ROLE_ADMIN')) %}
+    <a href="{{ path('edit',{'id' : espece.id}) }}" class="btn btn-warning">Modifier cet article</a>
+    <a href="{{ path('espece_delete',{'id' : espece.id}) }}" class="btn btn-danger">Supprimer cet article</a>
+  {% endif %}
+  <hr>
+
+  <!-- Afficher un formulaire pour un nouveau commentaire -->
+  {% if app.user %}
+    <h6><strong>Ajoutez un commentaire</strong></h6>
+    {{form_start(formComment)}}
+    {{form_widget(formComment.content, {'attr':{'placeholder':'Votre commentaire ...'}})}}
+    <br>
+    <button type="submit" class="btn btn-success" name="button">Publier</button>
+    {{form_end(formComment)}}
+    <hr>
+  {% else %}
+    <a href="{{ path('security_login')}}">Veuillez vous identifier pour publier un commentaire</a>
+    <hr>
+
+  {% endif %}
+
+  <!-- Afficher les commentaires -->
+  <!-- <h4>Commentaires</h4> -->
+  {% for comment in espece.comments %}
+  <div class="row">
+    <p class="col-3">De <strong>{{comment.author}}</strong><br>le {{comment.createAt | date('d/m/Y')}} à {{comment.createAt | date('H:i')}}</p>
+    <p class="col-9">{{comment.content}}</p>
+  </div>
+    <hr>
+  {% endfor %}
+
+
+  </section>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <h4>Sortie par <strong>{{sortie.user.username}}</strong> à {{ sortie.site.nom }}</h4>
+      <p>Le {{ sortie.createdAt | date('d/m/Y') }}</p>
+      <h5>Description</h5>
+      <p>{{ sortie.content }}</p>
+      {% if app.user and (app.user == sortie.user or is_granted('ROLE_ADMIN')) %}
+        <a class="btn btn-warning" href="{{ path('sortie_edit', {'site_id' : sortie.site.id, 'id' : sortie.id} ) }}">Modifier le contenu</a>
+        <a class="btn btn-danger" href="{{ path('sortie_delete', {'id' : sortie.id}) }}">Supprimer cette sortie</a>
+      {% endif %}
+    </div>
+    <div class="col-6">
+      <img src="{{ sortie.site.image }}" width="80%" alt="">
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-8">
+  <!-- TABLE DES PRISES -->
+  <h5>Prises</h5>
+  <div class="row">
+  {% for prise in sortie.prises | sort((a,b) => a.especes.nom <=> b.especes.nom) %}
+    <div class="col-3">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-4">
+              <img src="{{ prise.especes.image }}" width="30px" alt="">
+            </div>
+            <div class="col-8">
+              <h5 class="card-text">{{ prise.especes.nom }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ prise.taille }}cm</p>
+          <p class="card-text">{{ prise.spot.nom }}</p>
+          {% if app.user and (app.user == prise.sortie.user or is_granted('ROLLE_ADMIN')) %}
+            <a href="{{ path('prise_delete', {'id' : prise.id }) }}">Supprimer</a>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-3">
+      <br>
+
+      {% if app.user and (app.user == sortie.user) %}
+        <!-- FORMULAIRE D'AJOUT D'UNE PRISE -->
+        {{ form_start(formPrise) }}
+        <!-- ON VEUT FILTRER LES ESPECES PAR LA CATEGORIE DU SITE -->
+        {{ form_row(formPrise.especes, { 'label' : "Nom de l'espèce"}) }}
+
+        {{ form_row(formPrise.spot, { 'label' : "Nom du spot"}) }}
+        {{ form_row(formPrise.taille, { 'label' : "Taille", 'attr' : {'placeholder' : "Entrez la taille de la prise en cm"}}) }}
+        <button type="submit" class="btn btn-success" name="button">Ajouter une prise</button>
+        {{ form_end(formPrise) }}
+      {% endif %}
+    </div>
+  </div>
+  <!-- FORMULAIRE D'AJOUT DE COMMENTAIRE -->
+  </div>
+  {% if app.user %}
+    <h6><strong>Ajoutez un commentaire</strong></h6>
+    {{ form_start(formComment) }}
+    {{ form_widget(formComment.content, {'attr': {'placeholder':"Votre commentaire"}}) }}
+    <br>
+    <button type="submit" class="btn btn-success">Ajoutez un commentaire</button>
+    {{ form_end (formComment)}}
+  {% else %}
+    <a href="{{ path('security_login')}}">Veuillez vous identifier pour publier un commentaire</a>
+  {% endif %}
+    <hr>
+  <!-- COMMENTAIRES -->
+    {% for comment in sortie.sortieComments %}
+    <div class="row">
+      <p class="col-3">De <strong>{{comment.user.username}}</strong><br>le {{comment.createdAt | date('d/m/Y')}} à {{comment.createdAt | date('H:i')}}</p>
+      <p class="col-9">{{comment.content}}</p>
+    </div>
+    <hr>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

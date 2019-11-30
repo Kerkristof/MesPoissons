@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SortieController!{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    {% for sortie in sorties %}
+    <div class="col-3">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-text">{{ sortie.user.username}}</h5>
+        </div>
+        <div class="card-body">
+          <img src="{{ sortie.site.image }}" width="100%" alt="">
+          <p class="card-text">Le {{ sortie.createdAt | date('d/m/Y')}}</p>
+          <p class="card-text">{{ sortie.site.nom }}</p>
+          <div class="row">
+            <div class="col-md-4">
+              <img src="/assets/icones/coeur.webp" class="" style="width: 40%;" alt="heart">
+            </div>
+            <div class="col-md-4">
+              <strong>{{ sortie.sortieComments | length }}</strong>
+              <img src="/assets/icones/comment.png" style="width: 50%;" alt="comment">
+            </div>
+            <div class="col-md-4">
+              <strong>{{ sortie.prises | length }}</strong>
+              <img src="/assets/icones/prise.jpg" style="width: 70%;" alt="prises">
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="{{ path('sortie_show', {'id' : sortie.id})}}" class="btn btn-primary">Détails</a>
+        </div>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}
