@@ -90,7 +90,7 @@ class MesPoissonsController extends AbstractController
     public function home()
     {
         return $this->render('mes_poissons/home.html.twig',[
-            'message' => 'Bienvenue sur la page d\'accueil de mon site sur les poissons mon cher '
+            'message' => 'Bienvenue sur la page d\'accueil de mon site sur les poissons'
         ]);
     }
 

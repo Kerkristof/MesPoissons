@@ -9,6 +9,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use App\Repository\SiteRepository;
 use App\Repository\PriseRepository;
 use App\Repository\SortieCommentRepository;
+use App\Repository\EspecesRepository;
+use App\Repository\SpotRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use App\Entity\Sortie;
@@ -73,14 +75,26 @@ class SortieController extends AbstractController
      * @Route("/sortie/{id}/show", name="sortie_show")
      * @return [type] [description]
      */
-    public function show(Sortie $sortie, ObjectManager $manager, Request $request)
+    public function show(Sortie $sortie, ObjectManager $manager, Request $request, EspecesRepository $especes_repo,SpotRepository $spot_repo )
     {
       // AJOUT D'UNE NOUVELLE PRISE!
+
       $prise = new Prise();
       $prise->setSortie($sortie);
 
-      $prise_form = $this->createForm(PriseType::class, $prise);
-      
+      // LISTE DES ESPECES DE LA CATEGORIE DU SITE OU A EU LIEU LA SORTIE
+      $cat = $sortie->getSite()->getCategory();
+      $especes = $especes_repo->findBy(['category' => $cat]);
+
+      // LISTE DES SPOTS APPARTENANT AU SITE OU A EU LIEU LA sortie_edit
+      $spots = $sortie->getSite()->getSpots();
+
+      $prise_form = $this->createForm(PriseType::class, $prise, [
+        // IL FAUT PASSER "$especes" A LA FORME
+        'especesList' => $especes,
+        'spotList' => $spots
+      ]);
+
       $prise_form->handleRequest($request);
       if($prise_form->isSubmitted() && $prise_form->isValid())
       {
@@ -110,6 +124,7 @@ class SortieController extends AbstractController
 
       return $this->render('sortie/sortie_show.html.twig', [
         'sortie' => $sortie,
+        'especesList' => $especes,
         'formPrise' => $prise_form->createView(),
         'formComment' => $sortie_comment_form->createView()
       ]);

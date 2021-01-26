@@ -36,6 +36,7 @@ class SiteController extends AbstractController
       }
       $form = $this->createForm(FormSiteType::class, $site);
       $form->handleRequest($request);
+
       if ($form->isSubmitted() && $form->isValid())
       {
         $manager->persist($site);

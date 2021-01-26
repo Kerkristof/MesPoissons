@@ -57,12 +57,20 @@
         <!-- FORMULAIRE D'AJOUT D'UNE PRISE -->
         {{ form_start(formPrise) }}
         <!-- ON VEUT FILTRER LES ESPECES PAR LA CATEGORIE DU SITE -->
-        {{ form_row(formPrise.especes, { 'label' : "Nom de l'espèce"}) }}
-
-        {{ form_row(formPrise.spot, { 'label' : "Nom du spot"}) }}
+        <!-- <div class="form-group">
+          <label class="required" for="prise_especes">Espece</label>
+          <select id="prise_especes" name="prise[especes]" class="form-control">
+            {% for espece in especesList %}
+            <option value="{{ espece.id }}">{{ espece.nom }}</option>
+            {% endfor %}
+          </select>
+        </div> -->
+        {{ form_row(formPrise.especes, {'label':"Espece"})}}
+        {{ form_row(formPrise.spot, { 'label' : "Spot" }) }}
         {{ form_row(formPrise.taille, { 'label' : "Taille", 'attr' : {'placeholder' : "Entrez la taille de la prise en cm"}}) }}
         <button type="submit" class="btn btn-success" name="button">Ajouter une prise</button>
         {{ form_end(formPrise) }}
+
       {% endif %}
     </div>
   </div>

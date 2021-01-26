@@ -11,9 +11,9 @@
   {{ form_start(formSite) }}
     {{ form_row(formSite.nom, { 'label' : "Nom du site", 'attr' : {'placeholder' : "Entrez le nom du site"}}) }}
     {{ form_row(formSite.category, { 'label' : "Catégorie", 'attr' : {'placeholder' : "Entrez la catégoie du site"}}) }}
-    {{ form_row(formSite.image, { 'label' : "Image du site", 'attr' : {'placeholder' : "Adresse de l'image"}}) }}
     {{ form_row(formSite.content, { 'label' : "Description", 'attr' : {'placeholder' : "Entrez une description"}}) }}
     {{ form_row(formSite.gps, { 'label' : "Coordonnées GSP", 'attr' : {'placeholder' : "ex 48.52459, 1.98552"}}) }}
+    {{ form_row(formSite.image, { 'label' : "Image du site", 'attr' : {'placeholder' : "Adresse de l'image..."}}) }}
 
     <button type="submit" class="btn btn-success">
       {% if editMode %}
